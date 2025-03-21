@@ -23,7 +23,7 @@ def download_site(url):
 
 
 def download_sites(urls):
-    with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=20) as executor:
         executor.map(download_site, urls)
 
 
