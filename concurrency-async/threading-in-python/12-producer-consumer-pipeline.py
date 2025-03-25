@@ -19,19 +19,20 @@ class Pipeline:
         self.capacity = capacity
         self.message = None
         self.producer_lock = threading.Lock()
-        # This implementation has a problem. The consumer can
-        # **immediately** acquire its lock even if the producer
-        # has produced **no data**. The result: deadlock.
         self.consumer_lock = threading.Lock()
+        # Since the producer has produced no data, we prevent the
+        # consumer from trying to get a possible non-existent message
+        # by acquiring `self.consumer_lock`.
+        self.consumer_lock.acquire()
 
     def get_message(self):
         print(f'Consuming message of {self.message=}')
         self.consumer_lock.acquire()
         message = self.message
+        consumer_pipeline.append(message)
         # Since I've consumed a message, allow the producer
         # to add another message
         self.producer_lock.release()
-        producer_pipeline.append(message)
         return message
 
     def set_message(self, message):
