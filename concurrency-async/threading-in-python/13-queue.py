@@ -12,7 +12,7 @@ import time
 class Pipeline(queue.Queue):
     def __init__(self):
         # `queue.Queue` handles locking "automagically"
-        super().__init__(maxsize=0)
+        super().__init__(maxsize=20)
 
     def get_message(self):
         message = self.get()
