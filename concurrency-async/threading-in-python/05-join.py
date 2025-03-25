@@ -17,4 +17,6 @@ if __name__ == '__main__':
     # Create a daemon thread. A daemon thread **does** not keep the process running by default.
     t = threading.Thread(target=my_func, name='my_func', args=['realpython'])
     t.start()
+    # Causes main thread to wait for `t` to finish before continuing.
+    t.join()
     print('main() ended on main thread')
