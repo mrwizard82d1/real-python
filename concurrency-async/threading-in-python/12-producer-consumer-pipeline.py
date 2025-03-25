@@ -7,6 +7,7 @@ this problem in the next video.
 """
 import concurrent.futures
 import random
+import threading
 import time
 
 
@@ -17,15 +18,19 @@ class Pipeline:
     def __init__(self, capacity):
         self.capacity = capacity
         self.message = None
+        self.producer_lock = threading.Lock()
+        self.consumer_lock = threading.Lock()
 
     def get_message(self):
         print(f'Consuming message of {self.message=}')
+        self.consumer_lock.acquire()
         message = self.message
         consumer_pipeline.append(message)
         return message
 
     def set_message(self, message):
         print(f'Producing message of {self.message=}')
+        self.producer_lock.acquire()
         producer_pipeline.append(message)
         self.message = message
 
