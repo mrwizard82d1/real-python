@@ -1,9 +1,9 @@
 """
 Implements a protected pipeline between a producer and a consumer.
 
-This implementation has a problem. It correctly produces 10 messages,
-but it consumes **fewer than 10 messages** before terminating. We'll fix
-this problem in the next video.
+This implementation is not very robust. In a typical situation, producers
+produce events at a higher rate than consumers consume them. We'll fix
+this issue in the next video by using the `Queue` module and other features.
 """
 import concurrent.futures
 import random
