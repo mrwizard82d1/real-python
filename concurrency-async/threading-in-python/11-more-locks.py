@@ -1,8 +1,9 @@
 import threading
 
 lock = threading.Lock()
+print('Acquiring a lock')
 lock.acquire()
-print('lock acquired')
-# Anything between acquire and release is protected
-lock.release()
-print('lock released')
+print('Lock acquired')
+print('Acquiring a lock **again** produces deadlock')
+lock.acquire()
+print('Lock acquired')
