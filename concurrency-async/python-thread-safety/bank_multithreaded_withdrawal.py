@@ -9,8 +9,11 @@ class BankAccount:
     def withdraw(self, amount):
         if self.balance >= amount:
             new_balance = self.balance - amount
-            time.sleep(0.1) # Simulate a delay
+            delay = 0.1 if amount == 500 else 5
+            print(f'{delay=} for {amount=}')
+            time.sleep(0.1 if amount == 500 else 0.5) # Simulate a delay
             self.balance = new_balance
+            print(f'{self.balance=} for {amount=}')
         else:
             raise ValueError('Insufficient funds')
 
