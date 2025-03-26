@@ -7,23 +7,23 @@ from concurrent.futures import ThreadPoolExecutor
 import random
 import threading
 import time
+import logging
 
 
 # Semaphore with a maximum of two resources (for example, bank tellers)
 teller_semaphore = threading.Semaphore(2)
 
 
-def now():
-    return time.strftime('%H:%M:%S', time.localtime())
+logging.basicConfig(format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO)
 
 
 def serve_customer(name):
-    print(f'{now()}: {name} is waiting for a teller.')
+    logging.info(f'{name} is waiting for a teller.')
     with teller_semaphore:
-        print(f'{now()}: {name} is being served by a teller.')
+        logging.info(f'{name} is being served by a teller.')
         # Simulate the time taken for the teller to serve the customer
         time.sleep(random.randint(1, 3))
-        print(f'{now()}: {name} is finished being served.')
+        logging.info(f'{name} is finished being served.')
 
 
 customers = [
@@ -39,4 +39,4 @@ with ThreadPoolExecutor(max_workers=5) as executor:
     for customer_name in customers:
         thread = executor.submit(serve_customer, customer_name)
 
-print(f'{now()}: All customers have been served.')
+logging.info('All customers have been served.')
