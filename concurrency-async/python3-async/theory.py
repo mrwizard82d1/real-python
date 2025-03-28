@@ -35,5 +35,10 @@ async def main():
     elapsed = time.perf_counter() - start
     print(f'{r=} took {elapsed:0.2f} seconds')
 
+    start = time.perf_counter()
+    r = await asyncio.gather(rand_number(), rand_number(), rand_number())
+    elapsed = time.perf_counter() - start
+    print(f'{r=} took {elapsed:0.2f} seconds')
+
 if __name__ == '__main__':
     asyncio.run(main())
