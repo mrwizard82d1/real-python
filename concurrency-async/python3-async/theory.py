@@ -1,3 +1,8 @@
+import asyncio
+from random import randint
+import time
+
+
 def odds(start, stop):
     """
     Produces a sequence of odd numbers between start and stop, inclusive.
@@ -10,6 +15,12 @@ def odds(start, stop):
     for odd in range(start, stop + 1, 2):
         # `yield` will return a value and "pause>
         yield odd
+
+
+# **Synchronous** version
+def rand_number():
+    time.sleep(3)
+    return randint(1, 10)
 
 
 def main():
