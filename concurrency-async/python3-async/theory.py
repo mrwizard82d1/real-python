@@ -17,9 +17,10 @@ def odds(start, stop):
         yield odd
 
 
-# **Synchronous** version
-def rand_number():
-    time.sleep(3)
+# **Asynchronous** version
+async def rand_number():
+    # Sleep but allow other "threads" to proceed
+    await asyncio.sleep(3)
     return randint(1, 10)
 
 
