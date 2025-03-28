@@ -10,7 +10,7 @@ import aiohttp
 
 
 async def main():
-    pass
+    await asyncio.sleep(1)
 
 
 if __name__ == '__main__':
