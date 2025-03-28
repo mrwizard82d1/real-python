@@ -30,9 +30,10 @@ async def main():
     odds2 = tuple(odds(21, 29))
     print(odds2)
 
+    start = time.perf_counter()
     r = await rand_number()
-    print(f'{r=}')
-
+    elapsed = time.perf_counter() - start
+    print(f'{r=} took {elapsed:0.2f} seconds')
 
 if __name__ == '__main__':
-    await main()
+    asyncio.run(main())
