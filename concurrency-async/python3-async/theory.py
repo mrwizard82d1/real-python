@@ -15,6 +15,8 @@ def odds(start, stop):
 def main():
     odd_values = [odd for odd in odds(3, 15)]
     print(odd_values)
+    odds2 = tuple(odds(21, 29))
+    print(odds2)
 
 
 if __name__ == '__main__':
