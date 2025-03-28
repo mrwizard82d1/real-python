@@ -36,7 +36,11 @@ async def main():
     print(f'{r=} took {elapsed:0.2f} seconds')
 
     start = time.perf_counter()
-    r = await asyncio.gather(rand_number(), rand_number(), rand_number())
+    # Remember the expression, `(rand_number for...)`, is a **generator
+    # expression**; that is, it returns a generator. Unpacking it,
+    # using the `*` operator "expands" the generator into a
+    # sequence of its results.
+    r = await asyncio.gather(*(rand_number() for _ in range(10)))
     elapsed = time.perf_counter() - start
     print(f'{r=} took {elapsed:0.2f} seconds')
 
