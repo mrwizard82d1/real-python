@@ -24,12 +24,15 @@ async def rand_number():
     return randint(1, 10)
 
 
-def main():
+async def main():
     odd_values = [odd for odd in odds(3, 15)]
     print(odd_values)
     odds2 = tuple(odds(21, 29))
     print(odds2)
 
+    r = await rand_number()
+    print(f'{r=}')
+
 
 if __name__ == '__main__':
-    main()
+    await main()
