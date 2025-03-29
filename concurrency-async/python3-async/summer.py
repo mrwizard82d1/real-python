@@ -26,7 +26,7 @@ async def worker(name, n, session):
             'apiKey': 'cd0c0017-8bfd-44dc-80d1-183464ec75f8',
             'n': n,
             'min': 0,
-            'max': 100000,
+            'max': 65535,
             'replacement': True
         },
         'id': 42,
@@ -44,12 +44,13 @@ async def main():
     Create session and run requests asynchronously.
     """
     async with aiohttp.ClientSession() as session:
-        response = await worker(name='Bob', n=3, session=session)
-        print(f'{response=}, type={type(response)}')
+        sums = await asyncio.gather(*(worker(f'w{i}', n, session) for
+                                      i, n in enumerate(range(2, 5))))
+        print(f'{sums=}')
 
 
 if __name__ == '__main__':
     start = time.perf_counter()
     asyncio.run(main())
     elapsed = time.perf_counter() - start
-    print(f'Executed in {elapsed:.2f} seconds')
+    print(f'Executed in {elapsed:.4f} seconds')
