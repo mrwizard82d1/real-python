@@ -10,7 +10,7 @@ def fib(n):
 
 
 if __name__ == '__main__':
-    with ProcessPoolExecutor(max_workers=4) as executor:
+    with ProcessPoolExecutor() as executor:
         results = executor.map(fib, range(40))
         for i, result in enumerate(results):
             print(f'fib({i})={result}')
