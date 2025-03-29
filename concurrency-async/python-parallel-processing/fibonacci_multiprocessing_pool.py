@@ -10,7 +10,7 @@ def fib(n):
 
 
 if __name__ == '__main__':
-    with multiprocessing.Pool(processes=10) as pool:
+    with multiprocessing.Pool() as pool:
         results = pool.map(fib, range(40))
         for i, result in enumerate(results):
             print(f'fib({i})={result}')
