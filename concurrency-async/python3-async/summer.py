@@ -13,15 +13,31 @@ async def worker(name, n, session):
     """
     A worker function that collects n items
     :param name: The name of the session
-    :param n: The number of items to request
+    :param n: The number of random numbers to request
     :param session: The HTTP session to use
-    :return:
+    :return: The returned data in JSON format
     """
     print(f'worker {name} started')
-    url = f'https://www.random.org/integers/?num={n}&min=1&max=100000&col=1&base=10&format=plain&rnd=new'
-    response = await session.request(method='GET', url=url)
+    url = 'https://api.random.org/json-rpc/4/invoke'
+    params = {
+        'jsonrpc': '2.0',
+        'method': 'generateIntegers',
+        'params': {
+            'apiKey': 'cd0c0017-8bfd-44dc-80d1-183464ec75f8',
+            'n': n,
+            'min': 0,
+            'max': 100000,
+            'replacement': True
+        },
+        'id': 42,
+    }
+    response = await session.post(url,
+                                  data=json.dumps(params),
+                                  headers={'Content-Type': 'application/json'})
     value = await response.text()
-    return value
+    json_value = json.loads(value)
+    return sum(json_value['result']['random']['data'])
+
 
 async def main():
     """
