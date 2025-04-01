@@ -3,6 +3,9 @@
 
 #include <Python.h>
 
+/* A custom exception to raise. */
+static PyObject *StringTooShortError = NULL;
+
 static PyObject *method_fputs(PyObject *self, PyObject *args) {
   char *str, *filename = NULL;
   int bytes_copied = -1;
@@ -13,7 +16,7 @@ static PyObject *method_fputs(PyObject *self, PyObject *args) {
   }
 
   if (strlen(str) < 10) {
-    PyErr_SetString(PyExc_ValueError, "String must be greater than 10.");
+    PyErr_SetString(StringTooShortError, "String length must be greater than 10.");
     return NULL;
   }
 
@@ -39,5 +42,14 @@ static struct PyModuleDef fputsmodule = {
 };
 
 PyMODINIT_FUNC PyInit_fputs(void) {
-  return PyModule_Create(&fputsmodule);
+    /* Assign module value */
+    PyObject *module = PyModule_Create(&fputsmodule);
+
+    /* Initialize new exception object */
+    StringTooShortError = PyErr_NewException("fputs.StringToShortError", NULL, NULL);
+
+    /* Add new exception object to module */
+    PyModule_AddObject(module, "StringTooShortError", StringTooShortError);
+
+    return module;
 }
