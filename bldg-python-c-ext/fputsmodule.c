@@ -51,5 +51,14 @@ PyMODINIT_FUNC PyInit_fputs(void) {
     /* Add new exception object to module */
     PyModule_AddObject(module, "StringTooShortError", StringTooShortError);
 
+    /* Add `int` constant by name */
+    PyModule_AddIntConstant(module, "FPUTS_FLAG", 64);
+
+    /* Define `int` macro */
+    #define FPUTS_MACRO 256
+
+    /* Add macro to module */
+    PyModule_AddIntMacro(module, FPUTS_MACRO);
+
     return module;
 }
