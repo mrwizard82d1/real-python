@@ -12,6 +12,11 @@ static PyObject *method_fputs(PyObject *self, PyObject *args) {
     return NULL;
   }
 
+  if (strlen(str) < 10) {
+    PyErr_SetString(PyExc_ValueError, "String must be greater than 10.");
+    return NULL;
+  }
+
   FILE *fp = fopen(filename, "w");
   bytes_copied = fputs(str, fp);
   fclose(fp);
