@@ -233,4 +233,4 @@ dkms.conf
 # Generated files
 basic_fputs
 write.txt
-write_test.txt
+test_write.txt
