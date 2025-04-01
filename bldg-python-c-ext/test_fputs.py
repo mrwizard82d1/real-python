@@ -12,4 +12,5 @@ def test_copy_data():
     with open("test_write.txt", "r") as f:
         content_copied = f.read()
 
+    assert bytes_copied == len(content_to_copy)
     assert content_copied == content_to_copy
