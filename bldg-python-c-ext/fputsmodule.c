@@ -1,7 +1,10 @@
+#include "stdlib.h"
+#include "stdio.h"
+
 #include <Python.h>
 
 static PyObject *method_fputs(PyObject *self, PyObject *args) {
-  char *str, *filename = NUll;
+  char *str, *filename = NULL;
   int bytes_copied = -1;
 
   /* Parse arguments */
@@ -13,7 +16,7 @@ static PyObject *method_fputs(PyObject *self, PyObject *args) {
   bytes_copied = fputs(str, fp);
   fclose(fp);
 
-  return PyLong_FromLog(bytes_copied);
+  return PyLong_FromLong(bytes_copied);
 }
 
 static PyMethodDef FputsMethods[] = {
@@ -30,6 +33,6 @@ static struct PyModuleDef fputsmodule = {
   FputsMethods
 };
 
-PyMOD_INIT PyInit_fputs(void) {
+PyMODINIT_FUNC PyInit_fputs(void) {
   return PyModule_Create(&fputsmodule);
 }
