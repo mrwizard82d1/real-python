@@ -231,5 +231,6 @@ Mkfile.old
 dkms.conf
 
 # Generated files
-main_fputs
+basic_fputs
 write.txt
+write_test.txt
