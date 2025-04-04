@@ -1,0 +1,19 @@
+/Users/larry/Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/Users/larry/Applications/CLion.app/Contents/bin/ninja/mac/aarch64/ninja -G Ninja -DPython_EXECUTABLE=/Users/larry/professional/projects/real-python/concurrency-async/fibonacci_c/.venv/bin/python -DPython3_EXECUTABLE=/Users/larry/professional/projects/real-python/concurrency-async/fibonacci_c/.venv/bin/python -S /Users/larry/professional/projects/real-python/concurrency-async/fibonacci_c -B /Users/larry/professional/projects/real-python/concurrency-async/fibonacci_c/cmake-build-debug
+CMake Error at CMakeLists.txt:6 (find_package):
+  By not providing "FindPythonInterp.cmake" in CMAKE_MODULE_PATH this project
+  has asked CMake to find a package configuration file provided by
+  "PythonInterp", but CMake did not find one.
+
+  Could not find a package configuration file provided by "PythonInterp" with
+  any of the following names:
+
+    PythonInterpConfig.cmake
+    pythoninterp-config.cmake
+
+  Add the installation prefix of "PythonInterp" to CMAKE_PREFIX_PATH or set
+  "PythonInterp_DIR" to a directory containing one of the above files.  If
+  "PythonInterp" provides a separate development package or SDK, be sure it
+  has been installed.
+
+
+-- Configuring incomplete, errors occurred!

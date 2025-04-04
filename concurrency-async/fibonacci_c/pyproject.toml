@@ -1,0 +1,9 @@
+[project]
+name = "fibonacci-c"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.9"
+dependencies = [
+    "ipython>=8.18.1",
+    "setuptools>=78.1.0",
+]
