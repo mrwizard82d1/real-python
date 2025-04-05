@@ -25,6 +25,34 @@ class AppWindow(tk.Tk):
         self.frame.columnconfigure(0, weight=0)
         self.frame.columnconfigure(1, weight=1)
 
+        # EV slider
+        self.var_ev = tk.DoubleVar(value=0)
+        ev_label = ttk.Label(self.frame, text='Exposure:')
+        ev_label.grid(row=0, column=0, sticky=tk.W, padx=10, pady=10)
+        ev_slider = ttk.Scale(
+            self.frame,
+            from_=-1,
+            to=1,
+            orient=tk.HORIZONTAL,
+            variable=self.var_ev,
+        )
+        ev_slider.bind('<B1-Motion>', self.on_slide)
+        ev_slider.grid(row=0, column=1, sticky=tk.W, padx=10, pady=10)
+
+        # Gamma slider
+        self.var_gamma = tk.DoubleVar(value=1)
+        gamma_label = ttk.Label(self.frame, text='Gamma:')
+        gamma_label.grid(row=1, column=0, sticky=tk.W, padx=10, pady=10)
+        gamma_slider = ttk.Scale(
+            self.frame,
+            from_=0.1,
+            to=2,
+            orient=tk.HORIZONTAL,
+            variable=self.var_gamma,
+        )
+        gamma_slider.bind('<B1-Motion>', self.on_slide)
+        gamma_slider.grid(row=1, column=1, sticky=tk.W + tk.E, padx=10, pady=10)
+
         # Image pixels
         self.pixels = np.array(image)
 
