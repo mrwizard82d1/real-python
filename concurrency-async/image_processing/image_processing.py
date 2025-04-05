@@ -4,12 +4,15 @@ Image processing main module.
 
 import argparse
 import pathlib
+import time
 import tkinter as tk
 import tkinter.ttk as ttk
 
 import numpy as np
 import PIL.Image
 import PIL.ImageTk
+
+import parallel
 
 
 class AppWindow(tk.Tk):
@@ -78,9 +81,13 @@ class AppWindow(tk.Tk):
     def on_slide(self, *args, **kwargs) -> None:
         # Get parameters
         ev = 2.0 ** self.var_ev.get()
-        print(f'{ev=}')
         gamma = 1.0 / self.var_gamma.get()
-        print(f'{gamma=}')
+
+        # Process pixels
+        t1 = time.perf_counter()
+        pixels = self.pixels.copy()
+        parallel.process(pixels, ev, gamma)
+        t2 = time.perf_counter()
 
     def show_preview(self, image: PIL.Image.Image) -> None:
         scale = 0.75
