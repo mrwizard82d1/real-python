@@ -53,6 +53,20 @@ class AppWindow(tk.Tk):
         gamma_slider.bind('<B1-Motion>', self.on_slide)
         gamma_slider.grid(row=1, column=1, sticky=tk.W + tk.E, padx=10, pady=10)
 
+        # Image preview
+        self.preview = ttk.Label(self, relief=tk.SUNKEN)
+        self.preview.pack(padx=10, pady=10)
+
+        # Status bar
+        self.var_status = tk.StringVar()
+        status_bar = ttk.Label(
+            self,
+            anchor=tk.W,
+            relief=tk.SUNKEN,
+            textvariable=self.var_status,
+        )
+        status_bar.pack(side=tk.BOTTOM, fill=tk.X)
+
         # Image pixels
         self.pixels = np.array(image)
 
