@@ -75,8 +75,12 @@ class AppWindow(tk.Tk):
 
         self.mainloop()
 
-    def on_slide(self, *args, **kwargs):
-        pass
+    def on_slide(self, *args, **kwargs) -> None:
+        # Get parameters
+        ev = 2.0 ** self.var_ev.get()
+        print(f'{ev=}')
+        gamma = 1.0 / self.var_gamma.get()
+        print(f'{gamma=}')
 
     def show_preview(self, image: PIL.Image.Image) -> None:
         scale = 0.75
