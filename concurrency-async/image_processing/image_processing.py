@@ -5,6 +5,7 @@ Image processing main module.
 import argparse
 import pathlib
 import tkinter as tk
+import tkinter.ttk as ttk
 
 import numpy as np
 import PIL.Image
@@ -17,6 +18,12 @@ class AppWindow(tk.Tk):
         # Main window
         self.title('Exposure and Gamma Correction')
         self.resizable(False, False)
+
+        # Parameters frame
+        self.frame = ttk.LabelFrame(self, text='Parameters')
+        self.frame.pack(fill=tk.X, padx=10, pady=10)
+        self.frame.columnconfigure(0, weight=0)
+        self.frame.columnconfigure(1, weight=1)
 
         # Image pixels
         self.pixels = np.array(image)
