@@ -9,6 +9,7 @@ import tkinter.ttk as ttk
 
 import numpy as np
 import PIL.Image
+import PIL.ImageTk
 
 
 class AppWindow(tk.Tk):
@@ -69,14 +70,26 @@ class AppWindow(tk.Tk):
 
         # Image pixels
         self.pixels = np.array(image)
+        self.update()
+        self.show_preview(image)
 
         self.mainloop()
 
     def on_slide(self, *args, **kwargs):
         pass
 
-    def show_preview(self, *args, **kwargs):
-        pass
+    def show_preview(self, image: PIL.Image.Image) -> None:
+        scale = 0.75
+        offset = 2.0 * self.frame.winfo_height()
+        image.thumbnail(
+            (
+                int(self.frame.winfo_screenwidth() * scale),
+                int(self.frame.winfo_screenheight() * scale - offset),
+            )
+        )
+        image_tk = PIL.ImageTk.PhotoImage(image)
+        self.preview.configure(image=image_tk)
+        self.preview.image = image_tk
 
 
 def parse_args() -> argparse.Namespace:
