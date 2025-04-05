@@ -1,0 +1,11 @@
+[project]
+name = "fibonacci-cython"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "cython>=3.0.12",
+    "ipython>=9.0.2",
+    "setuptools>=78.1.0",
+]
