@@ -89,6 +89,18 @@ class AppWindow(tk.Tk):
         parallel.process(pixels, ev, gamma)
         t2 = time.perf_counter()
 
+        # Render preview
+        image = PIL.Image.fromarray(pixels)
+        self.show_preview(image)
+        t3 = time.perf_counter()
+
+        # Update status
+        self.var_status.set(
+            f'Processed in {(t2 - t1) * 1000:.0f} ms'
+            f'(Rendered in {(t3 - t1) * 1000:.0f} ms)'
+        )
+
+
     def show_preview(self, image: PIL.Image.Image) -> None:
         scale = 0.75
         offset = 2.0 * self.frame.winfo_height()
