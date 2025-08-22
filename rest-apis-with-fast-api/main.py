@@ -17,12 +17,12 @@ db = client.db
 shapes = db.shapes
 
 # Populate our "database"
-shapes.insert_one({"name": "triangle", "no_of_sides": 3, "id": 1})
+# Commented out now that we can populate our database using typical
+# web requests.
+# shapes.insert_one({"name": "triangle", "no_of_sides": 3, "id": 1})
 
 # Find all documents in our "database" (that is, **an empty filter**)
-shapes.find({})
-
-
+# shapes.find({})
 
 
 @app.get("/")
@@ -57,3 +57,11 @@ async def create_shapes(shape: Shape):
     # is not obsolete and should be replaced with `model_dump`.
     shapes.insert_one(shape.model_dump())
     return shape
+
+
+@app.put("/shapes/{shape_id}")
+async def update_shapes(shape_id: int, shape: Shape):
+    if shapes.count_documents({"id": shape_id}) > 0:
+        shapes.replace_one({"id": shape_id}, shape.model_dump())
+        return shape
+    raise HTTPException(status_code=404, detail=f"Shape with id, {shape_id}, not found.")
