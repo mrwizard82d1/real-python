@@ -21,7 +21,7 @@ async def get_shapes():
 
 
 @app.get("/shapes/{shape_id}")
-async def get_shape_by_id(shape_id):
+async def get_shape_by_id(shape_id: int) -> dict[str, str | int] | None:
     for shape in shapes:
         if shape["id"] == shape_id:
             return shape
