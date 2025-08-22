@@ -73,3 +73,12 @@ async def upsert_shape(shape_id: int, shape: Shape):
     # will insert a **new** document
     shapes.replace_one({"id": shape_id}, shape.model_dump(), upsert=True)
     return shape
+
+
+@app.delete("/shapes/{shape_id}")
+async def delete_shape(shape_id: int):
+    delete_result = shapes.delete_one({"id": shape_id})
+    if delete_result.deleted_count == 0:
+        raise HTTPException(status_code=404,
+                            detail=f"Shape with id, {shape_id}, not found to delete.")
+    return {"OK": True}
