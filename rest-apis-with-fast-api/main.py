@@ -60,8 +60,16 @@ async def create_shapes(shape: Shape):
 
 
 @app.put("/shapes/{shape_id}")
-async def update_shapes(shape_id: int, shape: Shape):
+async def update_shape(shape_id: int, shape: Shape):
     if shapes.count_documents({"id": shape_id}) > 0:
         shapes.replace_one({"id": shape_id}, shape.model_dump())
         return shape
     raise HTTPException(status_code=404, detail=f"Shape with id, {shape_id}, not found.")
+
+
+@app.put("/shapes/upsert/{shape_id}")
+async def upsert_shape(shape_id: int, shape: Shape):
+    # An "upsert" will update a document if it exists already; otherwise, it
+    # will insert a **new** document
+    shapes.replace_one({"id": shape_id}, shape.model_dump(), upsert=True)
+    return shape
