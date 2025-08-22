@@ -1,12 +1,28 @@
 from fastapi import FastAPI, HTTPException
+from mongita import MongitaClientDisk
+from pydantic import BaseModel
 
-shapes = [
-    {"item_name": "Circle", "no_of_sides": 1, "id": 1},
-    {"item_name": "Triangle", "no_of_sides": 3, "id": 2},
-    {"item_name": "Octagon", "no_of_sides": 8, "id": 3},
-]
+
+class Shape(BaseModel):
+    name: str
+    no_of_sides: int
+    id: int
+
 
 app = FastAPI()
+
+
+client = MongitaClientDisk()
+db = client.db
+shapes = db.shapes
+
+# Populate our "database"
+shapes.insert_one({"name": "triangle", "no_of_sides": 3, "id": 1})
+
+# Find all documents in our "database" (that is, **an empty filter**)
+shapes.find({})
+
+
 
 
 @app.get("/")
@@ -16,13 +32,28 @@ async def root():
 
 @app.get("/shapes")
 async def get_shapes():
-    return shapes
+    all_shapes = shapes.find({})
+    return [
+        # Removes the `_id` field from the shape. This field is inserted by
+        # Mongita because it **cannot** be automatically translated to JSON.
+        {key: shape[key] for key in shape if key != "_id"} for shape in all_shapes
+    ]
 
 
 @app.get("/shapes/{shape_id}")
 async def get_shape_by_id(shape_id: int) -> dict[str, str | int] | None:
-    for shape in shapes:
-        if shape["id"] == shape_id:
-            return shape
+    if shapes.count_documents({"id": shape_id}) > 0:
+        shape = shapes.find_one({"id": shape_id})
+        return {key: shape[key] for key in shape if key != "_id"}
 
-    raise HTTPException(status_code=404, detail=f"Shape with id, {shape_id}, not found.")
+    raise HTTPException(status_code=404,
+                        detail=f"Shape with id, {shape_id}, not found.")
+
+
+@app.post("/shapes")
+async def create_shapes(shape: Shape):
+    # Video passes `shape.dict()`; however, when I pass this, PyCharm
+    # "crosses out" the `dict()` method with information that `dict()`
+    # is not obsolete and should be replaced with `model_dump`.
+    shapes.insert_one(shape.model_dump())
+    return shape
