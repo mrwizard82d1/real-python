@@ -40,3 +40,17 @@ def get_book(book_id: int):
             return book
 
     return {"error": f"Book, id={book_id}, not found"}
+
+
+@app.post("/books")
+def create_book(book: Book):
+    """Create a new book entry."""
+    new_book = {
+        "id": len(books) + 1,
+        "title": book.title,
+        "author": book.author,
+        "pages": book.pages
+    }
+    books.append(new_book)
+
+    return new_book
