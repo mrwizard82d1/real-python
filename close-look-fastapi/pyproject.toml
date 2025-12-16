@@ -1,7 +1,7 @@
 [project]
 name = "close-look-fastapi"
 version = "0.1.0"
-description = "Add your description here"
+description = "Code from the RealPython tutorial, 'A Close Look at a FastAPI Example Application'."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
@@ -12,4 +12,5 @@ dependencies = [
 dev = [
     "ipython>=9.8.0",
     "pytest>=9.0.2",
+    "pytest-watch>=4.2.0",
 ]
