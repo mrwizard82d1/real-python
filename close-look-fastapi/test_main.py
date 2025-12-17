@@ -93,3 +93,13 @@ def test_all_query_parameters():
     assert json_response['max'] == max_value
     assert 'random_number' in json_response.keys()
     assert min_value <= json_response['random_number'] <= max_value
+
+
+def test_min_less_than_max_query_parameters():
+    min_value = 961
+    max_value = 920
+    response = client.get(f'/random-between?min_value={min_value}&max_value={max_value}')
+    assert response.status_code == 400
+    json_response = response.json()
+    assert len(json_response) == 1
+    assert json_response['detail'] == 'min_value cannot be greater than max_value'

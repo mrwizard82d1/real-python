@@ -7,6 +7,10 @@ from fastapi import FastAPI, HTTPException, Query
 app = FastAPI()
 
 
+# A (cheap) in-memory database
+items = []
+
+
 @app.get('/')
 def read_main():
     return {'message': 'Welcome to the Randomizer API'}
@@ -37,7 +41,7 @@ def get_random_number_between(
 ):
     if min_value > max_value:
         raise HTTPException(status_code=400,
-                            detail="min_value cannot be greater that max_value")
+                            detail="min_value cannot be greater than max_value")
 
     return {
         'min': min_value,
