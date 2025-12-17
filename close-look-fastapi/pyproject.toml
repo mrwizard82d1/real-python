@@ -10,6 +10,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "httpx>=0.28.1",
     "ipython>=9.8.0",
     "pytest>=9.0.2",
     "pytest-watch>=4.2.0",
