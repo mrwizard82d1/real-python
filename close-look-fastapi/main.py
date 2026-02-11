@@ -2,10 +2,18 @@ import random
 from typing import Annotated
 
 from fastapi import FastAPI, HTTPException, Query
+from pydantic import BaseModel, Field
 
 app = FastAPI()
 
 items_db = ["Clojure", "Python", "C#", "Java"]
+
+class Item(BaseModel):
+    name: str = Field(
+        min_length=1,
+        max_length=100,
+        description="The item name",
+    )
 
 
 @app.get("/random_between")
@@ -61,17 +69,18 @@ def get_randomized_items():
 
 
 @app.post("/items")
-def add_item(body: dict):
-    item_name = body.get("name")
-    if not item_name:
-        raise HTTPException(status_code=400, detail="'name' field is required")
+def add_item(item: Item):
+    # Remove the initialization and validation of `item_name`:
+    # item_name = body.get("name")
+    # if not item_name:
+    #     raise HTTPException(status_code=400, detail="'name' field is required")
 
-    if item_name in items_db:
+    if item.name in items_db:
         raise HTTPException(status_code=400, detail="Item already exists")
 
-    items_db.append(item_name)
+    items_db.append(item.name)
     return {"message": "Item added successfully",
-            "item": item_name}
+            "item": item.name}
 
 
 @app.put("/items/{update_item_name}")
