@@ -5,7 +5,7 @@ from fastapi import FastAPI, HTTPException, Query
 
 app = FastAPI()
 
-items_db = []
+items_db = ["Clojure", "Python", "C#", "Java"]
 
 
 @app.get("/random_between")
@@ -46,6 +46,17 @@ def get_random_number(max_value: int):
     return {
         "max": max_value,
         "random_number": random.randint(1, max_value)
+    }
+
+
+@app.get("/items")
+def get_randomized_items():
+    randomized = items_db.copy()
+    random.shuffle(randomized)
+    return {
+        "original_order": items_db,
+        "randomized_order": randomized,
+        "count": len(items_db),
     }
 
 
