@@ -100,3 +100,17 @@ def update_item(update_item_name: str, body: dict):
         "old_item": update_item_name,
         "new_item": new_name
     }
+
+
+@app.delete("/items/{item}")
+def delete_item(item: str):
+    if item not in items_db:
+        raise HTTPException(status_code=404, detail=f"Item, '{item}', not found")
+
+    items_db.remove(item)
+
+    return {
+        "message": "Item deleted successfully",
+        "deleted_item": item,
+        "remaining_items_count": len(items_db)
+    }
