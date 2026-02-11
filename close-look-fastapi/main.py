@@ -70,11 +70,6 @@ def get_randomized_items():
 
 @app.post("/items")
 def add_item(item: Item):
-    # Remove the initialization and validation of `item_name`:
-    # item_name = body.get("name")
-    # if not item_name:
-    #     raise HTTPException(status_code=400, detail="'name' field is required")
-
     if item.name in items_db:
         raise HTTPException(status_code=400, detail="Item already exists")
 
