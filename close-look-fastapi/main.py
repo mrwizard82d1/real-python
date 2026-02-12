@@ -15,6 +15,31 @@ class Item(BaseModel):
         description="The item name",
     )
 
+# Response models
+
+class ItemResponse(BaseModel):
+    """Returning an Item."""
+    message: str
+    item: str
+
+
+class ItemListResponse(BaseModel):
+    original_order: list[str]
+    randomized_order: list[str]
+    count: int
+
+
+class ItemUpdateResponse(BaseModel):
+    message: str
+    old_item: str
+    new_item: str
+
+
+class ItemDeleteResponse(BaseModel):
+    message: str
+    deleted_item: str
+    remaining_items_count: int
+
 
 @app.get("/random_between")
 def get_random_number_between(
@@ -57,39 +82,33 @@ def get_random_number(max_value: int):
     }
 
 
-@app.get("/items")
-def get_randomized_items():
-    randomized = items_db.copy()
-    random.shuffle(randomized)
-    return {
-        "original_order": items_db,
-        "randomized_order": randomized,
-        "count": len(items_db),
-    }
-
-
-@app.post("/items")
+@app.post("/items", response_model=ItemResponse)
 def add_item(item: Item):
     if item.name in items_db:
         raise HTTPException(status_code=400, detail="Item already exists")
 
     items_db.append(item.name)
-    return {"message": "Item added successfully",
-            "item": item.name}
+    return ItemResponse(
+        message="Item added successfully",
+        item=item.name,
+    )
 
 
-@app.put("/items/{update_item_name}")
+@app.get("/items", response_model=ItemListResponse)
+def get_randomized_items():
+    randomized = items_db.copy()
+    random.shuffle(randomized)
+    return ItemListResponse(
+        original_order=items_db,
+        randomized_order=randomized,
+        count=len(items_db),
+    )
+
+
+@app.put("/items/{update_item_name}", response_model=ItemUpdateResponse)
 def update_item(update_item_name: str, item: Item):
     if update_item_name not in items_db:
         raise HTTPException(status_code=404, detail=f"Item, '{update_item_name}', not found")
-
-    # Remove the initialization and validation of `new_name`
-    # new_name = body.get("name")
-    # if not new_name:
-    #     raise HTTPException(
-    #         status_code=400,
-    #         detail="'name' field is required in request body",
-    #     )
 
     if item.name in items_db:
         raise HTTPException(
@@ -100,22 +119,22 @@ def update_item(update_item_name: str, item: Item):
     index = items_db.index(update_item_name)
     items_db[index] = item.name
 
-    return {
-        "message": "Item updated successfully",
-        "old_item": update_item_name,
-        "new_item": item.name
-    }
+    return ItemUpdateResponse(
+        message="Item updated successfully",
+        old_item=update_item_name,
+        new_item=item.name
+    )
 
 
-@app.delete("/items/{item}")
+@app.delete("/items/{item}", response_model=ItemDeleteResponse)
 def delete_item(item: str):
     if item not in items_db:
         raise HTTPException(status_code=404, detail=f"Item, '{item}', not found")
 
     items_db.remove(item)
 
-    return {
-        "message": "Item deleted successfully",
-        "deleted_item": item,
-        "remaining_items_count": len(items_db)
-    }
+    return ItemDeleteResponse(
+        message="Item deleted successfully",
+        deleted_item=item,
+        remaining_items_count=len(items_db)
+    )
