@@ -5,7 +5,24 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-app = FastAPI()
+# Create `tags_metadata` to provide better documentation
+tags_metadata = [
+    {
+        "name": "Random Playground",
+        "description": "Generate random numbers.",
+    },
+    {
+        "name": "Random Items Management",
+        "description": "Create, shuffle, read, update and delete items.",
+    }
+]
+
+app = FastAPI(
+    title="Randomizer API",
+    description="Shuffle lists, pick random items, and generate random numbers.",
+    version="1.0.0",
+    openapi_tags=tags_metadata,
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -59,12 +76,12 @@ class ItemDeleteResponse(BaseModel):
     remaining_items_count: int
 
 
-@app.get("/")
+@app.get("/", tags=["Random Playground"])
 async def home():
     return {"message": "Welcome to the Randomizer API"}
 
 
-@app.get("/random/{max_value}")
+@app.get("/random/{max_value}", tags=["Random Playground"])
 async def get_random_number(max_value: int):
     """Generate a random number between 1 and max_value (inclusive)."""
     return {
@@ -73,7 +90,7 @@ async def get_random_number(max_value: int):
     }
 
 
-@app.get("/random_between")
+@app.get("/random_between", tags=["Random Playground"])
 async def get_random_number_between(
         min_value: Annotated[int, Query(
             title="Minimum value",
@@ -100,7 +117,8 @@ async def get_random_number_between(
     }
 
 
-@app.get("/items", response_model=ItemListResponse)
+@app.get("/items", response_model=ItemListResponse,
+         tags=["Random Items Management"])
 async def get_randomized_items():
     randomized = items_db.copy()
     random.shuffle(randomized)
@@ -111,7 +129,8 @@ async def get_randomized_items():
     )
 
 
-@app.post("/items", response_model=ItemResponse)
+@app.post("/items", response_model=ItemResponse,
+          tags=["Random Items Management"])
 async def add_item(item: Item):
     if item.name in items_db:
         raise HTTPException(status_code=400, detail="Item already exists")
@@ -123,7 +142,8 @@ async def add_item(item: Item):
     )
 
 
-@app.put("/items/{update_item_name}", response_model=ItemUpdateResponse)
+@app.put("/items/{update_item_name}", response_model=ItemUpdateResponse,
+         tags=["Random Items Management"])
 async def update_item(update_item_name: str, item: Item):
     if update_item_name not in items_db:
         raise HTTPException(status_code=404, detail=f"Item, '{update_item_name}', not found")
@@ -144,7 +164,8 @@ async def update_item(update_item_name: str, item: Item):
     )
 
 
-@app.delete("/items/{item}", response_model=ItemDeleteResponse)
+@app.delete("/items/{item}", response_model=ItemDeleteResponse,
+            tags=["Random Items Management"])
 async def delete_item(item: str):
     if item not in items_db:
         raise HTTPException(status_code=404, detail=f"Item, '{item}', not found")
