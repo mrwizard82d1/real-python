@@ -79,30 +79,31 @@ def add_item(item: Item):
 
 
 @app.put("/items/{update_item_name}")
-def update_item(update_item_name: str, body: dict):
+def update_item(update_item_name: str, item: Item):
     if update_item_name not in items_db:
         raise HTTPException(status_code=404, detail=f"Item, '{update_item_name}', not found")
 
-    new_name = body.get("name")
-    if not new_name:
-        raise HTTPException(
-            status_code=400,
-            detail="'name' field is required in request body",
-        )
+    # Remove the initialization and validation of `new_name`
+    # new_name = body.get("name")
+    # if not new_name:
+    #     raise HTTPException(
+    #         status_code=400,
+    #         detail="'name' field is required in request body",
+    #     )
 
-    if new_name in items_db:
+    if item.name in items_db:
         raise HTTPException(
             status_code=409,
-            detail=f"An item with name, '{new_name}', already exists"
+            detail=f"An item with name, '{item.name}', already exists"
         )
 
     index = items_db.index(update_item_name)
-    items_db[index] = new_name
+    items_db[index] = item.name
 
     return {
         "message": "Item updated successfully",
         "old_item": update_item_name,
-        "new_item": new_name
+        "new_item": item.name
     }
 
 
