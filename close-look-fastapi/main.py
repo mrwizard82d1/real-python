@@ -2,9 +2,27 @@ import random
 from typing import Annotated
 
 from fastapi import FastAPI, HTTPException, Query
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    # allow_origins=["http://localhost:3000", "https://example.com"],
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE"],
+    # Allowing all headers can expose API to security risks.
+    #
+    # In production,
+    # - **Explicitly** list the headers allowed to access the API
+    # - Use HTTPS for secure communication
+    # - Carefully consider which HTTP methods and headers your API
+    #   should accept from cross-origin requests
+    #
+    # allow_headers=["*"],
+)
 
 items_db = ["Clojure", "Python", "C#", "Java"]
 
